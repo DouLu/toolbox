@@ -4,6 +4,7 @@ import Home from "../pages/Home";
 import Tools from "../pages/Tools";
 import ErrorPage from "../pages/ErrorPage";
 import MyLayout from "../layout";
+import DailyCheckIn from "../pages/DailyCheckIn";
 
 export const routes: RouteObject[] = [
   {
@@ -23,6 +24,10 @@ export const routes: RouteObject[] = [
       {
         path: "tools",
         element: <Tools />,
+      },
+      {
+        path: "dailyCheckIn",
+        element: <DailyCheckIn />,
       },
     ],
   },

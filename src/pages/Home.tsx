@@ -17,7 +17,7 @@ export default function Home() {
             </Card>
           </Col>
           <Col span={8}>
-            <Card title="日签" extra={<Link to="">more</Link>}>
+            <Card title="日签" extra={<Link to="/dailyCheckIn">more</Link>}>
               练习项目，一个专属自己的每日签到应用
             </Card>
           </Col>
