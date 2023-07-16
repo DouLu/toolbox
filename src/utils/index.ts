@@ -1,4 +1,6 @@
-const DATE_FORMATER = "DD/MM/YYYY";
-const FULL_DATE_FORMATER = "DD-MM-YYYY h:mm:ss";
+const DATE_FORMATER = "YYYY/MM/DD";
+const FULL_DATE_FORMATER = "YYYY-MM-DD h:mm:ss";
 
-export { DATE_FORMATER, FULL_DATE_FORMATER };
+const API_HOST = "http://127.0.0.1:8080/api/";
+
+export { API_HOST, DATE_FORMATER, FULL_DATE_FORMATER };
