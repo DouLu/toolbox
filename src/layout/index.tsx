@@ -1,15 +1,12 @@
 import {
-  GiftOutlined,
   GithubFilled,
-  GithubOutlined,
   NotificationFilled,
-  NotificationOutlined,
-  SearchOutlined,
   SettingFilled,
   UserOutlined,
 } from "@ant-design/icons";
 import { Breadcrumb, Button, Input, Layout, Menu, Space } from "antd";
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Suspense } from "react";
+import { NavLink, Outlet } from "react-router-dom";
 import "./index.css";
 const { Header, Sider, Footer, Content } = Layout;
 
@@ -41,6 +38,7 @@ export default function MyLayout() {
           items={[
             { title: "home", path: "/" },
             { title: "tools", path: "/tools" },
+            { title: "lazy tools", path: "/lazy_tools" },
             { title: "dashboard", path: "/dashboard" },
           ].map(({ title, path }) => ({
             key: title,
@@ -65,7 +63,9 @@ export default function MyLayout() {
             <Breadcrumb.Item>List</Breadcrumb.Item>
             <Breadcrumb.Item>App</Breadcrumb.Item>
           </Breadcrumb>
-          <Outlet />
+          <Suspense fallback={<p>loading.....</p>}>
+            <Outlet />
+          </Suspense>
         </div>
 
         <Footer style={footerStyle}>

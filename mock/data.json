@@ -1,4 +1,26 @@
 {
+  "todoList": [
+    {
+      "id": 1,
+      "title": "todo list",
+      "desc": "练习项目，模仿todo list"
+    },
+    {
+      "id": 2,
+      "title": "时钟⏰",
+      "desc": "练习项目，熟悉time API和canvas/svg"
+    },
+    {
+      "id": 3,
+      "title": "日签",
+      "desc": "练习项目，一个专属自己的每日签到应用"
+    },
+    {
+      "id": 4,
+      "title": "待定",
+      "desc": "后续添加。。。"
+    }
+  ],
   "checkIn": [
     {
       "id": 1688659200000,
@@ -27,10 +49,17 @@
       "avatar": "https://xsgames.co/randomusers/avatar.php?g=pixel",
       "id": 1689436800000,
       "date": "2023/07/16"
+    },
+    {
+      "quotes": "Fall seven times and stand up eight",
+      "img": "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+      "avatar": "https://xsgames.co/randomusers/avatar.php?g=pixel",
+      "id": 1689523200000,
+      "date": "2023/07/17"
     }
   ],
   "randomQuotes": {
-    "quotes": "There is no greater agony than bearing an untold story inside you",
+    "quotes": "Fall seven times and stand up eight",
     "img": "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
     "avatar": "https://xsgames.co/randomusers/avatar.php?g=pixel"
   }
