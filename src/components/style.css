@@ -1,0 +1,47 @@
+.todo-panel {
+  width: 100%;
+  height: calc(100% - 101px);
+  overflow-x: scroll;
+  display: flex;
+  align-content: flex-start;
+  justify-content: flex-start;
+}
+.category-card {
+  background-color: #f6f8fa;
+  border: solid 1px #d8dee4;
+  border-radius: 6px;
+  box-sizing: border-box;
+  margin-right: 10px;
+  padding: 16px;
+  width: 340px;
+  flex-shrink: 0;
+}
+.preview-label {
+  background-color: #f6f8fa;
+  border-radius: 6px;
+  padding: 10px 16px;
+  box-sizing: border-box;
+  text-align: center;
+  > span {
+    display: inline-block;
+    padding: 2px 10px;
+    box-sizing: border-box;
+    border-radius: 999px;
+    border-color: #d0d7de;
+    border-style: solid;
+  }
+}
+
+.check-icon-wrap {
+  padding: 8px;
+  border-radius: 6px;
+}
+
+.todo-card {
+  background-color: #fff;
+  border: solid 1px #d8dee4;
+  border-radius: 6px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  padding: 10px;
+}

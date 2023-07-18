@@ -56,11 +56,59 @@
       "avatar": "https://xsgames.co/randomusers/avatar.php?g=pixel",
       "id": 1689523200000,
       "date": "2023/07/17"
+    },
+    {
+      "quotes": "Work hard in silence, let your success be the noise.",
+      "img": "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+      "avatar": "https://xsgames.co/randomusers/avatar.php?g=pixel",
+      "id": 1689609600000,
+      "date": "2023/07/18"
     }
   ],
   "randomQuotes": {
-    "quotes": "Fall seven times and stand up eight",
+    "quotes": "Work hard in silence, let your success be the noise.",
     "img": "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
     "avatar": "https://xsgames.co/randomusers/avatar.php?g=pixel"
-  }
+  },
+  "todos": [
+    {
+      "id": 1,
+      "title": "Todo",
+      "color": "#1a7f37",
+      "items": [
+        {
+          "id": 1,
+          "title": "todo list",
+          "content": "markdown text",
+          "tag": "customize",
+          "status": "Todo",
+          "createTime": "",
+          "lastModify": "",
+          "author": ""
+        }
+      ],
+      "desc": "This item hasn't been started"
+    },
+    {
+      "id": 2,
+      "title": "In Progress",
+      "color": "#9a6700",
+      "items": null,
+      "desc": "This is actively being worked on"
+    },
+    {
+      "id": 3,
+      "title": "Done",
+      "color": "#8250df",
+      "items": null,
+      "desc": "This has been completed"
+    },
+    {
+      "id": 4,
+      "title": "Other",
+      "color": "#d1242f",
+      "items": null,
+      "desc": "碎片存放处"
+    }
+  ]
 }

@@ -5,7 +5,9 @@ import DailyCheckIn from "../pages/DailyCheckIn";
 import Dashboard from "../pages/Dashboard";
 import ErrorPage from "../pages/ErrorPage";
 import Home from "../pages/Home";
+import Todo from "../pages/Todo";
 import Tools from "../pages/Tools";
+import { API_HOST } from "../utils";
 
 const LazyTools = lazy(() => import("../pages/Tools"));
 
@@ -19,6 +21,13 @@ export const routes: RouteObject[] = [
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/todo",
+        element: <Todo />,
+        loader: async () => {
+          return fetch(API_HOST + "todos").then((res) => res.json());
+        },
       },
       {
         path: "dashboard",

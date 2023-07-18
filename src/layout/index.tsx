@@ -37,6 +37,7 @@ export default function MyLayout() {
           defaultSelectedKeys={["2"]}
           items={[
             { title: "home", path: "/" },
+            { title: "todo", path: "/todo" },
             { title: "tools", path: "/tools" },
             { title: "lazy tools", path: "/lazy_tools" },
             { title: "dashboard", path: "/dashboard" },
@@ -57,7 +58,7 @@ export default function MyLayout() {
           </Space>
         </Header>
 
-        <div style={{ padding: "0 20px", boxSizing: "border-box" }}>
+        <div className="content">
           <Breadcrumb style={{ margin: "16px 0" }}>
             <Breadcrumb.Item>Home</Breadcrumb.Item>
             <Breadcrumb.Item>List</Breadcrumb.Item>
