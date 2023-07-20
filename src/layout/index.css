@@ -8,8 +8,10 @@
   background-color: #1677ff;
 }
 .content {
-  overflow: hidden;
-  height: calc(100% - 129px);
   padding: 0 20px;
   box-sizing: border-box;
+}
+.vh-content {
+  overflow: hidden;
+  height: calc(100% - 129px);
 }

@@ -1,14 +1,34 @@
-import { AppstoreAddOutlined } from "@ant-design/icons";
-import { Button, Col, Input, Row } from "antd";
+import { AppstoreAddOutlined, EllipsisOutlined } from "@ant-design/icons";
+import { Button, Col, Dropdown, Input, Row } from "antd";
 import { useState } from "react";
-import { useLoaderData } from "react-router-dom";
-import AddColums from "../components/AddColums";
-import CategoriesCard, { CategoriesType } from "../components/CategoriesCard";
-import { TodoItemList } from "../components/TodoItemCard";
+import { useEffectOnce } from "react-use";
+import CategoriesCard from "../components/CategoriesCard";
+import TodoColumsModal from "../components/TodoColumsModal";
+import TodoList from "../components/TodoList";
+import useTodo from "../hooks/useTodo";
 
 export default function Todo() {
-  const categories: CategoriesType[] = useLoaderData() as CategoriesType[];
+  // const categories: CategoriesType[] = useLoaderData() as CategoriesType[];
   const [open, setOpen] = useState(false);
+  const {
+    postTodoColums,
+    getTodoList,
+    todoList = [],
+    columsInfo,
+    setColumsInfo,
+    deleteTodoColums,
+    patchTodoColums,
+    getTodoColumsById,
+  } = useTodo();
+
+  useEffectOnce(() => {
+    getTodoList();
+  });
+
+  const closeColumsModal = () => {
+    setColumsInfo(undefined);
+    setOpen(false);
+  };
   return (
     <>
       <Row gutter={16} style={{ marginBottom: 15 }}>
@@ -20,9 +40,40 @@ export default function Todo() {
         </Col>
       </Row>
       <div className="todo-panel">
-        {categories.map(({ id, items, ...c }) => (
-          <CategoriesCard key={id} {...c} number={items?.length}>
-            <TodoItemList dataSource={items} />
+        {todoList.map(({ id, items, ...c }) => (
+          <CategoriesCard
+            key={id}
+            {...c}
+            number={items?.length}
+            extra={
+              <Dropdown
+                trigger={["click"]}
+                menu={{
+                  items: [
+                    { key: "edit", label: "edit" },
+                    { key: "delete", label: "delete" },
+                  ],
+                  onClick: (info) => {
+                    switch (info.key) {
+                      case "edit":
+                        getTodoColumsById(id);
+                        setOpen(true);
+                        break;
+                      case "delete":
+                        deleteTodoColums(id);
+                        getTodoList();
+                        break;
+                      default:
+                        return;
+                    }
+                  },
+                }}
+              >
+                <EllipsisOutlined />
+              </Dropdown>
+            }
+          >
+            <TodoList dataSource={items} handleEdit={() => {}} />
           </CategoriesCard>
         ))}
         <Col key="add-colums">
@@ -34,12 +85,19 @@ export default function Todo() {
           />
         </Col>
       </div>
-      <AddColums
+      <TodoColumsModal
         open={open}
-        handleCancel={() => {
-          setOpen(false);
+        initialValue={columsInfo}
+        handleCancel={closeColumsModal}
+        handleSave={(values) => {
+          if (values?.id) {
+            patchTodoColums(values);
+          } else {
+            postTodoColums(values);
+          }
+          closeColumsModal();
+          getTodoList();
         }}
-        saveColums={() => {}}
       />
     </>
   );

@@ -1,14 +1,13 @@
-import { EllipsisOutlined } from "@ant-design/icons";
-import { Badge, Space, Typography } from "antd";
-import { TodoItemType } from "./AddItem";
+import { Badge, Col, Row, Space, Typography } from "antd";
+import { TodoItemType } from "./TodoModal";
 import "./style.css";
 
 export type CategoriesType = {
   id: number;
   title: string;
-  desc: string;
   color: string;
-  items: TodoItemType[] | null;
+  desc?: string;
+  items?: TodoItemType[] | null;
 };
 
 export default function CategoriesCard({
@@ -16,32 +15,39 @@ export default function CategoriesCard({
   desc,
   color,
   number = 0,
+  extra,
   children,
 }: {
   title: string;
   color: string;
   desc?: string;
   number?: number;
+  extra?: React.JSX.Element;
   children: JSX.Element;
 }) {
   return (
     <div className="category-card">
-      <Space align="start">
-        <span
-          style={{
-            display: "inline-block",
-            width: "20px",
-            height: "20px",
-            borderRadius: "50%",
-            backgroundColor: color,
-          }}
-        />
-        <Typography.Title level={5} style={{ margin: 0 }}>
-          {title}
-        </Typography.Title>
-        <Badge count={number} showZero color="#faad14" />
-        <EllipsisOutlined onClick={() => {}} />
-      </Space>
+      <Row justify={"space-between"} wrap={false}>
+        <Col flex="auto">
+          <Space align="start">
+            <span
+              style={{
+                display: "inline-block",
+                width: "20px",
+                height: "20px",
+                borderRadius: "50%",
+                backgroundColor: color,
+              }}
+            />
+            <Typography.Title level={5} style={{ margin: 0 }}>
+              {title}
+            </Typography.Title>
+            <Badge count={number} showZero color="#faad14" />
+          </Space>
+        </Col>
+        <Col flex="none">{extra}</Col>
+      </Row>
+
       <p>{desc}</p>
       <div>{children}</div>
     </div>

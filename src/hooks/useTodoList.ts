@@ -18,7 +18,7 @@ export default function useTodoList() {
         });
     }, 2000);
   };
-
+  // FIXME: 不要在这里使用，放到页面渲染的地方去，不然每次调用该hooks都触发了request
   useEffect(() => {
     getTodoList();
   }, []);

@@ -1,28 +1,36 @@
 import { Button, Form, Input, Modal, Space } from "antd";
-import useTodo from "../hooks/useTodo";
+import { useEffect } from "react";
 import ColorSelector from "./ColorSelector";
 
-type ColumsType = { title: string; color: string; desc: string };
-type AddColumsProps = {
-  open: boolean;
-  initialData?: ColumsType;
-  handleCancel: () => void;
-  saveColums: (data: ColumsType) => void;
+export type ColumsType = {
+  id: number;
+  title: string;
+  color: string;
+  desc?: string;
 };
-const AddColums: React.FC<AddColumsProps> = ({
+type TodoColumsModalProps = {
+  open: boolean;
+  initialValue?: ColumsType;
+  handleCancel: () => void;
+  handleSave: (values: ColumsType) => void;
+};
+const TodoColumsModal: React.FC<TodoColumsModalProps> = ({
   open,
-  initialData,
+  initialValue,
   handleCancel,
-  saveColums,
+  handleSave,
 }) => {
   const [form] = Form.useForm<ColumsType>();
   const labelText = Form.useWatch("title", form);
-  const { postTodoColums } = useTodo();
-  const onFinish = () => {
-    const data = form.getFieldsValue();
-    // @ts-ignore
-    postTodoColums(data);
-  };
+
+  useEffect(() => {
+    if (initialValue) {
+      form.setFieldsValue(initialValue);
+    } else {
+      open && form.resetFields();
+    }
+  }, [initialValue, open]);
+
   return (
     <Modal
       title="Edit options"
@@ -33,7 +41,13 @@ const AddColums: React.FC<AddColumsProps> = ({
       <div className="preview-label">
         <span>{labelText}</span>
       </div>
-      <Form layout="vertical" form={form} onFinish={onFinish}>
+      <Form
+        layout="vertical"
+        form={form}
+        onFinish={() => {
+          handleSave(form.getFieldsValue(true));
+        }}
+      >
         <Form.Item name="title" label="Label text" required>
           <Input />
         </Form.Item>
@@ -58,4 +72,4 @@ const AddColums: React.FC<AddColumsProps> = ({
   );
 };
 
-export default AddColums;
+export default TodoColumsModal;

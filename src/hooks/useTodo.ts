@@ -1,9 +1,14 @@
 import { useState } from "react";
-import { CategoriesType } from "../components/CategoriesCard";
+import { ColumsType } from "../components/TodoColumsModal";
+import { TodoItemType } from "../components/TodoModal";
 import { API_HOST } from "../utils";
+import { CategoriesType } from "./../components/CategoriesCard";
 
 export default function useTodo() {
-  const [todoList, setTodoList] = useState();
+  const [todoList, setTodoList] = useState<CategoriesType[]>();
+  const [columsInfo, setColumsInfo] = useState<ColumsType>();
+  const [todoInfo, setTodoInfo] = useState<TodoItemType>();
+
   const getTodoList = () => {
     fetch(API_HOST + "todos")
       .then((res) => res.json())
@@ -12,6 +17,16 @@ export default function useTodo() {
       })
       .catch((err) => console.log(err));
   };
+
+  const getTodoColumsById = (id: number) => {
+    fetch(API_HOST + "todos/" + id)
+      .then((res) => res.json())
+      .then((res) => {
+        setColumsInfo(res);
+      })
+      .catch((err) => console.log(err));
+  };
+
   const postTodoColums = (data: CategoriesType) => {
     fetch(API_HOST + "todos", {
       method: "POST",
@@ -25,8 +40,20 @@ export default function useTodo() {
       .catch((err) => console.log(err));
   };
 
+  const deleteTodoColums = (id: number) => {
+    fetch(API_HOST + "todos/" + id, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then(() => {})
+      .catch((err) => console.log(err));
+  };
+
   const patchTodoColums = (data: CategoriesType) => {
-    fetch(API_HOST + "todos", {
+    fetch(API_HOST + "todos/" + data.id, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -37,5 +64,14 @@ export default function useTodo() {
       .then(() => {})
       .catch((err) => console.log(err));
   };
-  return { todoList, getTodoList, postTodoColums, patchTodoColums };
+  return {
+    todoList,
+    getTodoList,
+    postTodoColums,
+    patchTodoColums,
+    columsInfo,
+    setColumsInfo,
+    getTodoColumsById,
+    deleteTodoColums,
+  };
 }

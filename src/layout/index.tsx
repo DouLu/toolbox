@@ -6,7 +6,7 @@ import {
 } from "@ant-design/icons";
 import { Breadcrumb, Button, Input, Layout, Menu, Space } from "antd";
 import { Suspense } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useMatch } from "react-router-dom";
 import "./index.css";
 const { Header, Sider, Footer, Content } = Layout;
 
@@ -28,6 +28,7 @@ const footerStyle: React.CSSProperties = {
 };
 
 export default function MyLayout() {
+  const todoPage = useMatch("/todo");
   return (
     <Layout>
       <Sider style={siderStyle}>
@@ -58,7 +59,7 @@ export default function MyLayout() {
           </Space>
         </Header>
 
-        <div className="content">
+        <div className={`content ${todoPage && "vh-content"}`}>
           <Breadcrumb style={{ margin: "16px 0" }}>
             <Breadcrumb.Item>Home</Breadcrumb.Item>
             <Breadcrumb.Item>List</Breadcrumb.Item>
