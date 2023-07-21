@@ -5,11 +5,14 @@ import { useEffectOnce } from "react-use";
 import CategoriesCard from "../components/CategoriesCard";
 import TodoColumsModal from "../components/TodoColumsModal";
 import TodoList from "../components/TodoList";
+import TodoModal from "../components/TodoModal";
 import useTodo from "../hooks/useTodo";
 
 export default function Todo() {
   // const categories: CategoriesType[] = useLoaderData() as CategoriesType[];
   const [open, setOpen] = useState(false);
+  const [visible, setVisible] = useState(false);
+
   const {
     postTodoColums,
     getTodoList,
@@ -36,7 +39,7 @@ export default function Todo() {
           <Input.Search />
         </Col>
         <Col flex={100}>
-          <Button>Add item</Button>
+          <Button disabled={!todoList.length}>Add item</Button>
         </Col>
       </Row>
       <div className="todo-panel">
@@ -97,6 +100,13 @@ export default function Todo() {
           }
           closeColumsModal();
           getTodoList();
+        }}
+      />
+      <TodoModal
+        open={visible}
+        initialValue={undefined}
+        handleClose={() => {
+          setVisible(false);
         }}
       />
     </>

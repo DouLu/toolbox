@@ -1,7 +1,7 @@
 .todo-panel {
   width: 100%;
   height: calc(100% - 101px);
-  overflow-x: scroll;
+  overflow: scroll;
   display: flex;
   align-content: flex-start;
   justify-content: flex-start;

@@ -1,5 +1,30 @@
 import { TodoItemType } from "./TodoModal";
 
+const TodoItemCard = ({
+  id,
+  title,
+  handleEdit,
+}: {
+  id: number;
+  title: string;
+  handleEdit: (id: number) => void;
+}) => {
+  // TODO: drag&drop component,参考 - http://react-grid-layout.github.io/react-draggable/example/
+  return (
+    <div className="todo-card">
+      <p className="draft-icon">Draft</p>
+      <a
+        href="none"
+        onClick={() => {
+          handleEdit(id);
+        }}
+      >
+        {title}
+      </a>
+    </div>
+  );
+};
+
 const TodoList: React.FC<{
   dataSource: TodoItemType[] | null | undefined;
   handleEdit: (id: number) => void;
@@ -7,17 +32,12 @@ const TodoList: React.FC<{
   return (
     <>
       {(dataSource || []).map((d) => (
-        <div className="todo-card" key={d.id}>
-          <p className="draft-icon">Draft</p>
-          <a
-            href="none"
-            onClick={() => {
-              handleEdit(d.id);
-            }}
-          >
-            {d.title}
-          </a>
-        </div>
+        <TodoItemCard
+          key={d.id}
+          handleEdit={handleEdit}
+          id={d.id}
+          title={d.title}
+        />
       ))}
     </>
   );
