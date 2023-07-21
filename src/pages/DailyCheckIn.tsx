@@ -3,7 +3,8 @@ import type { SelectInfo } from "antd/es/calendar/generateCalendar";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import type { CellRenderInfo } from "rc-picker/lib/interface";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useEffectOnce } from "react-use";
 import DailyCheckInCard from "../components/DailyCheckInCard";
 import useDailyCheckIn from "../hooks/useDailyCheckIn";
 import { DATE_FORMATER, FULL_DATE_FORMATER } from "../utils";
@@ -29,9 +30,7 @@ export default function DailyCheckIn() {
     checked,
   } = useDailyCheckIn();
 
-  useEffect(() => {
-    getCheckedInList();
-  }, []);
+  useEffectOnce(getCheckedInList);
 
   const verifyExistence = (date: dayjs.Dayjs) => {
     return (
@@ -41,7 +40,7 @@ export default function DailyCheckIn() {
 
   const cellRender = (current: Dayjs, info: CellRenderInfo<Dayjs>) => {
     if (verifyExistence(current)) {
-      return <div>checked ✅</div>;
+      return <div style={{ textAlign: "center" }}>checked ✅</div>;
     }
     return null;
   };
@@ -93,9 +92,9 @@ export default function DailyCheckIn() {
           }
         }}
       >
-        view today words
+        today words
       </Button>
-      <Typography.Title>打卡记录</Typography.Title>
+      <Typography.Title>Clock-in Records Calendar</Typography.Title>
       <Calendar
         cellRender={cellRender}
         onSelect={handleSelect}
