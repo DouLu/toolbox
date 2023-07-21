@@ -73,5 +73,7 @@ export default function useTodo() {
     setColumsInfo,
     getTodoColumsById,
     deleteTodoColums,
+    todoInfo,
+    setTodoInfo,
   };
 }
