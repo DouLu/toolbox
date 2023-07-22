@@ -15,7 +15,8 @@ const TodoItemCard = ({
       <p className="draft-icon">Draft</p>
       <a
         href="none"
-        onClick={() => {
+        onClick={(e) => {
+          e.preventDefault();
           handleEdit(id);
         }}
       >
@@ -30,7 +31,7 @@ const TodoList: React.FC<{
   handleEdit: (id: number) => void;
 }> = ({ dataSource, handleEdit }) => {
   return (
-    <>
+    <div className="todoList-panel">
       {(dataSource || []).map((d) => (
         <TodoItemCard
           key={d.id}
@@ -39,7 +40,7 @@ const TodoList: React.FC<{
           title={d.title}
         />
       ))}
-    </>
+    </div>
   );
 };
 

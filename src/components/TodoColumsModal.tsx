@@ -26,10 +26,12 @@ const TodoColumsModal: React.FC<TodoColumsModalProps> = ({
   useEffect(() => {
     if (initialValue) {
       form.setFieldsValue(initialValue);
-    } else {
-      open && form.resetFields();
     }
-  }, [initialValue, open]);
+  }, [initialValue]);
+
+  useEffect(() => {
+    if (!open) form?.resetFields();
+  }, [open]);
 
   return (
     <Modal
@@ -54,9 +56,9 @@ const TodoColumsModal: React.FC<TodoColumsModalProps> = ({
         <Form.Item name="color" label="Color">
           <ColorSelector />
         </Form.Item>
-        <Form.Item name="desc" label="Description">
+        {/* <Form.Item name="desc" label="Description">
           <Input.TextArea rows={6} />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item>
           <Space>
             <Button htmlType="button" onClick={handleCancel}>

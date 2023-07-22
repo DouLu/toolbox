@@ -8,7 +8,7 @@ export default function useTodoList() {
 
   const getTodoList = () => {
     setTimeout(() => {
-      fetch(API_HOST + "todoList")
+      fetch(API_HOST + "test")
         .then((res) => res.json())
         .then((res) => {
           setTodoList(res);

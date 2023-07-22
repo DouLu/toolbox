@@ -1,5 +1,6 @@
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { Space } from "antd";
+import { useEffectOnce } from "react-use";
 
 const STATUS_COLORS = [
   { inactive: "#f6f8fa", active: "#656d76" },
@@ -12,15 +13,23 @@ const STATUS_COLORS = [
   { inactive: "#fbefff", active: "#8250df" },
 ];
 
+const DEFAULT_COLOR = STATUS_COLORS[0].active;
+
 interface ColorSelectorProps {
+  defaultValue?: string;
   value?: string;
   onChange?: (value: string) => void;
 }
 
 const ColorSelector: React.FC<ColorSelectorProps> = ({
+  defaultValue,
   value = STATUS_COLORS[0].active,
   onChange,
 }) => {
+  useEffectOnce(() => {
+    onChange?.(defaultValue || DEFAULT_COLOR);
+  });
+
   return (
     <Space>
       {STATUS_COLORS.map((s) => (

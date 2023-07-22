@@ -1,11 +1,11 @@
 import { AppstoreAddOutlined, EllipsisOutlined } from "@ant-design/icons";
-import { Button, Col, Dropdown, Input, Row } from "antd";
+import { Button, Col, Dropdown, Input, Row, message } from "antd";
 import { useState } from "react";
 import { useEffectOnce } from "react-use";
 import CategoriesCard from "../components/CategoriesCard";
 import TodoColumsModal from "../components/TodoColumsModal";
 import TodoList from "../components/TodoList";
-import TodoModal from "../components/TodoModal";
+import TodoModal, { TodoItemType } from "../components/TodoModal";
 import useTodo from "../hooks/useTodo";
 
 export default function Todo() {
@@ -15,31 +15,56 @@ export default function Todo() {
 
   const {
     postTodoColums,
-    getTodoList,
+    getUnionList,
     todoList = [],
     columsInfo,
     setColumsInfo,
     deleteTodoColums,
     patchTodoColums,
     getTodoColumsById,
+    todoInfo,
+    postTodoItem,
+    getTodoInfo,
+    patchTodoItem,
+    searchTodos,
   } = useTodo();
 
   useEffectOnce(() => {
-    getTodoList();
+    getUnionList();
   });
 
   const closeColumsModal = () => {
     setColumsInfo(undefined);
     setOpen(false);
   };
+
+  const refreshTodo = (res?: TodoItemType) => {
+    if (res?.id) {
+      getTodoInfo(res.id);
+      getUnionList();
+    } else {
+      message.error("fetch error");
+    }
+  };
   return (
     <>
       <Row gutter={16} style={{ marginBottom: 15 }}>
         <Col flex={"auto"}>
-          <Input.Search />
+          <Input.Search
+            onSearch={(val) => {
+              searchTodos(val);
+            }}
+          />
         </Col>
         <Col flex={100}>
-          <Button disabled={!todoList.length}>Add item</Button>
+          <Button
+            onClick={() => {
+              setVisible(true);
+            }}
+            disabled={!todoList.length}
+          >
+            Add item
+          </Button>
         </Col>
       </Row>
       <div className="todo-panel">
@@ -63,8 +88,11 @@ export default function Todo() {
                         setOpen(true);
                         break;
                       case "delete":
-                        deleteTodoColums(id);
-                        getTodoList();
+                        deleteTodoColums(
+                          id,
+                          items?.map((i) => i.id)
+                        );
+                        getUnionList();
                         break;
                       default:
                         return;
@@ -76,7 +104,13 @@ export default function Todo() {
               </Dropdown>
             }
           >
-            <TodoList dataSource={items} handleEdit={() => {}} />
+            <TodoList
+              dataSource={items}
+              handleEdit={(id) => {
+                getTodoInfo(id);
+                setVisible(true);
+              }}
+            />
           </CategoriesCard>
         ))}
         <Col key="add-colums">
@@ -99,15 +133,23 @@ export default function Todo() {
             postTodoColums(values);
           }
           closeColumsModal();
-          getTodoList();
+          getUnionList();
         }}
       />
       <TodoModal
         open={visible}
-        initialValue={undefined}
+        initialValue={todoInfo}
         handleClose={() => {
           setVisible(false);
         }}
+        handleSave={(todo) => {
+          if (todo.categoryId && !todo.id) {
+            postTodoItem(todo).then(refreshTodo);
+          } else {
+            patchTodoItem(todo).then(refreshTodo);
+          }
+        }}
+        columnList={todoList}
       />
     </>
   );

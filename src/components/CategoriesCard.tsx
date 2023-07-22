@@ -47,9 +47,8 @@ export default function CategoriesCard({
         </Col>
         <Col flex="none">{extra}</Col>
       </Row>
-
       <p>{desc}</p>
-      <div>{children}</div>
+      {children}
     </div>
   );
 }
