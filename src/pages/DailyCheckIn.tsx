@@ -6,8 +6,9 @@ import type { CellRenderInfo } from "rc-picker/lib/interface";
 import { useState } from "react";
 import { useEffectOnce } from "react-use";
 import DailyCheckInCard from "../components/DailyCheckInCard";
+import useClock from "../hooks/useClock";
 import useDailyCheckIn from "../hooks/useDailyCheckIn";
-import { DATE_FORMATER, FULL_DATE_FORMATER } from "../utils";
+import { DATE_FORMATER } from "../utils";
 
 export type CheckInType = {
   id: number; // 当天的时间戳
@@ -19,7 +20,7 @@ export type CheckInType = {
 
 export default function DailyCheckIn() {
   const [open, setOpen] = useState(false);
-
+  const { time } = useClock();
   const {
     getCheckedInList,
     getCheckInDataById,
@@ -77,8 +78,7 @@ export default function DailyCheckIn() {
   );
   return (
     <div>
-      {/* FIXME: 换成⏰时钟组件 */}
-      <p>welcome! today is {dayjs().format(FULL_DATE_FORMATER)}</p>
+      <p>welcome! today is {time}</p>
       <Button
         size="large"
         type="primary"

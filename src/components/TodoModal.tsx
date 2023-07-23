@@ -12,10 +12,9 @@ import {
   Tag,
   Typography,
 } from "antd";
-import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import useTodo from "../hooks/useTodo";
-import { FULL_DATE_FORMATER } from "../utils";
+import { getCurrentTime } from "../utils";
 import { ColumsType } from "./TodoColumsModal";
 
 export type TodoItemType = {
@@ -67,14 +66,14 @@ const TodoModal: React.FC<TodoModalProps> = ({
   }, [initialValue]);
 
   const doSave = (val: string | any) => {
-    const lastModify = dayjs().format(FULL_DATE_FORMATER);
+    const lastModify = getCurrentTime();
     const title = typeof val === "string" ? val : todoInfo?.title || "";
     const updateValue = { title, lastModify };
 
     if (todoInfo?.id) {
       handleSave({ ...todoInfo, ...updateValue });
     } else {
-      const createTime = dayjs().format(FULL_DATE_FORMATER);
+      const createTime = getCurrentTime();
       // @ts-ignore
       handleSave({
         createTime,
