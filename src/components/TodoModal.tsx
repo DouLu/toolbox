@@ -34,7 +34,8 @@ type TodoModalProps = {
   initialValue?: TodoItemType;
   handleClose: () => void;
   handleSave: (todo: TodoItemType) => void;
-  // TODO: 使用reducer来组织数据
+  // FIXME: 使用reducer来组织数据
+  // FIXME: 关闭modal后，initialVaue要清空
   columnList?: ColumsType[];
 };
 
@@ -94,7 +95,6 @@ const TodoModal: React.FC<TodoModalProps> = ({
 
   return (
     <Modal
-      destroyOnClose
       width={1000}
       open={open}
       onCancel={handleClose}
@@ -106,7 +106,8 @@ const TodoModal: React.FC<TodoModalProps> = ({
       <Row wrap={false}>
         <Col flex={3}>
           <MDXEditor
-            markdown={todoInfo?.content || ""}
+            key={JSON.stringify(initialValue?.content)}
+            markdown={initialValue?.content || ""}
             contentEditableClassName="editor-panel"
             onChange={(content) => {
               // @ts-ignore

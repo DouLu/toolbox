@@ -11,7 +11,7 @@ export default function useTodo() {
 
   // @ts-ignore
   const setUnionList = ([columnList, todoList]) => {
-    // TODO: 如果两个列表都为null是否报错？
+    // FIXME: 如果两个列表都为null是否报错？
     const unionList = (columnList as ColumsType[]).map((c) => {
       const items = (todoList as TodoItemType[]).filter(
         (t) => t.categoryId === c.id
