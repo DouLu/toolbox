@@ -3,7 +3,18 @@ import {
   CopyOutlined,
   ReloadOutlined,
 } from "@ant-design/icons";
-import { Avatar, Button, Card, Modal, Space } from "antd";
+import {
+  Avatar,
+  Badge,
+  BadgeProps,
+  Button,
+  Card,
+  Input,
+  Modal,
+  Space,
+  Typography,
+} from "antd";
+import { useState } from "react";
 import { CheckInType } from "../pages/DailyCheckIn";
 
 const DailyCheckInCard = ({
@@ -19,9 +30,12 @@ const DailyCheckInCard = ({
   open: boolean;
   onCancel: () => void;
   handleReload: () => void;
-  handleCkeckIn: () => void;
+  handleCkeckIn: (content?: string | React.MouseEvent) => void;
 }) => {
-  const { quotes, img, avatar } = checkInData || {};
+  const { quotes, img, avatar, doneList } = checkInData || {};
+  const [isEdit, setIsEdit] = useState(false);
+  const [value, setValue] = useState("");
+
   return (
     <Modal open={open} title={false} footer={false} onCancel={onCancel}>
       <Space>
@@ -44,17 +58,75 @@ const DailyCheckInCard = ({
             description={quotes}
           />
         </Card>
-        <Button
-          size="large"
-          icon={<CheckCircleFilled />}
-          onClick={handleCkeckIn}
-          disabled={checked}
-        >
-          check in
-        </Button>
+        <div>
+          <Button
+            size="large"
+            icon={<CheckCircleFilled />}
+            onClick={handleCkeckIn}
+            disabled={checked}
+          >
+            check in
+          </Button>
+          <Typography.Title level={5}>today summary</Typography.Title>
+          <DoneList dataSource={doneList} />
+          {isEdit ? (
+            <div>
+              <Input.TextArea
+                value={value}
+                onChange={(e) => {
+                  setValue(e.target.value);
+                }}
+              />
+              <Button
+                size="large"
+                type="primary"
+                onClick={() => {
+                  setValue("");
+                  handleCkeckIn(value);
+                  setIsEdit(false);
+                }}
+              >
+                Save
+              </Button>
+            </div>
+          ) : (
+            <>
+              {!checked && (
+                <Button
+                  size="large"
+                  type="primary"
+                  onClick={() => {
+                    setIsEdit(true);
+                  }}
+                >
+                  Add summary
+                </Button>
+              )}
+            </>
+          )}
+        </div>
       </Space>
     </Modal>
   );
 };
 
 export default DailyCheckInCard;
+
+export const DoneList: React.FC<{
+  dataSource?: { status: BadgeProps["status"]; content: string }[];
+}> = ({ dataSource }) => {
+  return (
+    <>
+      {!!dataSource?.length && (
+        <div>
+          {dataSource?.map((d, index) => (
+            <>
+              <Badge key={index} status={d.status} text={d.content} />
+              <br />
+            </>
+          ))}
+        </div>
+      )}
+    </>
+  );
+};

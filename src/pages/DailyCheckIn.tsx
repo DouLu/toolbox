@@ -1,12 +1,11 @@
-import { Button, Calendar, Typography } from "antd";
+import { BadgeProps, Button, Calendar, Typography } from "antd";
 import type { SelectInfo } from "antd/es/calendar/generateCalendar";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import type { CellRenderInfo } from "rc-picker/lib/interface";
 import { useState } from "react";
 import { useEffectOnce } from "react-use";
-import DailyCheckInCard from "../components/DailyCheckInCard";
-import useClock from "../hooks/useClock";
+import DailyCheckInCard, { DoneList } from "../components/DailyCheckInCard";
 import useDailyCheckIn from "../hooks/useDailyCheckIn";
 import { DATE_FORMATER } from "../utils";
 
@@ -16,11 +15,12 @@ export type CheckInType = {
   quotes: string;
   img: string;
   avatar: string;
+  doneList?: { status: BadgeProps["status"]; content: string }[];
 };
 
 export default function DailyCheckIn() {
   const [open, setOpen] = useState(false);
-  const { time } = useClock();
+  // const { time } = useClock();
   const {
     getCheckedInList,
     getCheckInDataById,
@@ -29,19 +29,26 @@ export default function DailyCheckIn() {
     checkedInList,
     checkInData,
     checked,
+    patchRandom,
   } = useDailyCheckIn();
 
   useEffectOnce(getCheckedInList);
 
-  const verifyExistence = (date: dayjs.Dayjs) => {
-    return (
-      checkedInList.map((c) => c.date).indexOf(date.format(DATE_FORMATER)) >= 0
-    );
-  };
+  const verifyExistence = (date: dayjs.Dayjs) =>
+    checkedInList.map((c) => c.date).some((d) => d && date.isSame(d, "day"));
 
   const cellRender = (current: Dayjs, info: CellRenderInfo<Dayjs>) => {
+    const doneList = checkedInList.find((c) =>
+      current.isSame(c.date, "day")
+    )?.doneList;
+
     if (verifyExistence(current)) {
-      return <div style={{ textAlign: "center" }}>checked ✅</div>;
+      return (
+        <>
+          <CheckIcon />
+          <DoneList dataSource={doneList} />
+        </>
+      );
     }
     return null;
   };
@@ -58,17 +65,26 @@ export default function DailyCheckIn() {
     }
   };
 
-  const handleCheckIn = () => {
-    if (!checked) {
+  // @ts-ignore
+  const handleCheckIn = (content) => {
+    const data = structuredClone(checkInData!);
+
+    if (!checked && typeof content !== "string") {
       const date = dayjs().format(DATE_FORMATER);
-      const data = {
-        ...checkInData,
-        id: dayjs(date).valueOf(),
-        date,
-      };
+      data.id = dayjs(date).valueOf();
+      data.date = date;
       postCheckIn(data, () => {
         setOpen(false);
         getCheckedInList();
+        patchRandom({ ...data, doneList: null });
+      });
+    } else {
+      const doneList = (checkInData?.doneList || []).concat([
+        { status: "success", content },
+      ]);
+      data.doneList = doneList;
+      patchRandom(data, () => {
+        getRandomQuotes();
       });
     }
   };
@@ -78,7 +94,8 @@ export default function DailyCheckIn() {
   );
   return (
     <div>
-      <p>welcome! today is {time}</p>
+      {/* FIXME: 如何只更新time组件，而不触发calendar组件的渲染？ */}
+      {/* <p>welcome! today is {time}</p> */}
       <Button
         size="large"
         type="primary"
@@ -115,3 +132,18 @@ export default function DailyCheckIn() {
     </div>
   );
 }
+
+const CheckIcon = () => (
+  <div
+    style={{
+      position: "absolute",
+      left: 0,
+      top: 0,
+      width: "100%",
+      padding: "4px 0",
+      textAlign: "center",
+    }}
+  >
+    checked ✅
+  </div>
+);
