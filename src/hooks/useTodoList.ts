@@ -1,6 +1,18 @@
 import { useEffect, useState } from "react";
 import { API_HOST } from "../utils";
 
+/**
+ * state tree
+ * columnInfo
+ * columns
+ * todos
+ * todoInfo
+ * action type
+ * 2. edit column - columnInfo数据要更新
+ * 2. add column - todos数据更新
+ * 2. delete column - todos数据更新
+ * @returns
+ */
 export default function useTodoList() {
   const [todoList, setTodoList] = useState<
     { id: number; title: string; desc: string }[]
@@ -18,7 +30,7 @@ export default function useTodoList() {
         });
     }, 2000);
   };
-  // FIXME: 不要在这里使用，放到页面渲染的地方去，不然每次调用该hooks都触发了request
+
   useEffect(() => {
     getTodoList();
   }, []);

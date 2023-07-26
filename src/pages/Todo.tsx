@@ -23,10 +23,12 @@ export default function Todo() {
     patchTodoColums,
     getTodoColumsById,
     todoInfo,
+    setTodoInfo,
     postTodoItem,
     getTodoInfo,
     patchTodoItem,
     searchTodos,
+    deleteTodo,
   } = useTodo();
 
   useEffectOnce(() => {
@@ -46,6 +48,14 @@ export default function Todo() {
       message.error("fetch error");
     }
   };
+
+  const doDelete = () => {
+    deleteTodo(todoInfo?.id!, () => {
+      setVisible(false);
+      getUnionList();
+    });
+  };
+
   return (
     <>
       <Row gutter={16} style={{ marginBottom: 15 }}>
@@ -107,8 +117,9 @@ export default function Todo() {
             <TodoList
               dataSource={items}
               handleEdit={(id) => {
-                getTodoInfo(id);
-                setVisible(true);
+                getTodoInfo(id, (res) => {
+                  if (res.id) setVisible(true);
+                });
               }}
             />
           </CategoriesCard>
@@ -139,8 +150,10 @@ export default function Todo() {
       <TodoModal
         open={visible}
         initialValue={todoInfo}
+        columnList={todoList}
         handleClose={() => {
           setVisible(false);
+          setTodoInfo(undefined);
         }}
         handleSave={(todo) => {
           if (todo.categoryId && !todo.id) {
@@ -149,7 +162,7 @@ export default function Todo() {
             patchTodoItem(todo).then(refreshTodo);
           }
         }}
-        columnList={todoList}
+        handleDelete={doDelete}
       />
     </>
   );

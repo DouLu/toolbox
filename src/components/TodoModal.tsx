@@ -13,7 +13,6 @@ import {
   Typography,
 } from "antd";
 import { useEffect, useState } from "react";
-import useTodo from "../hooks/useTodo";
 import { getCurrentTime } from "../utils";
 import { ColumsType } from "./TodoColumsModal";
 
@@ -33,9 +32,8 @@ type TodoModalProps = {
   open: boolean;
   initialValue?: TodoItemType;
   handleClose: () => void;
+  handleDelete: () => void;
   handleSave: (todo: TodoItemType) => void;
-  // FIXME: 使用reducer来组织数据
-  // FIXME: 关闭modal后，initialVaue要清空
   columnList?: ColumsType[];
 };
 
@@ -50,14 +48,12 @@ const TodoModal: React.FC<TodoModalProps> = ({
   initialValue,
   handleSave,
   handleClose,
+  handleDelete,
   columnList = [],
 }) => {
   const [todoInfo, setTodoInfo] = useState<TodoItemType>();
-  const { deleteTodo, getUnionList } = useTodo();
 
   useEffect(() => {
-    console.log("🚀 ~ file: TodoModal.tsx:59 ~ initialValue:", initialValue);
-    setTodoInfo(initialValue);
     if (initialValue) {
       setTodoInfo(initialValue);
     } else {
@@ -69,28 +65,21 @@ const TodoModal: React.FC<TodoModalProps> = ({
   const doSave = (val: string | any) => {
     const lastModify = getCurrentTime();
     const title = typeof val === "string" ? val : todoInfo?.title || "";
-    const updateValue = { title, lastModify };
+    const updateValue: any = { ...todoInfo, title, lastModify };
 
     if (todoInfo?.id) {
-      handleSave({ ...todoInfo, ...updateValue });
+      handleSave(updateValue);
     } else {
       const createTime = getCurrentTime();
       // @ts-ignore
       handleSave({
+        ...updateValue,
         createTime,
         author: "DL",
         tag: "string",
         status: "Done",
-        ...updateValue,
       });
     }
-  };
-
-  const doDelete = () => {
-    deleteTodo(todoInfo?.id!);
-    // FIXME: 用reducer解决不刷新问题
-    getUnionList();
-    handleClose();
   };
 
   return (
@@ -101,7 +90,11 @@ const TodoModal: React.FC<TodoModalProps> = ({
       footer={false}
       title={false}
     >
-      <EditableTitle initialValue={todoInfo} onSave={doSave} />
+      <EditableTitle
+        key={JSON.stringify(initialValue?.title)}
+        initialValue={initialValue}
+        onSave={doSave}
+      />
       <Divider />
       <Row wrap={false}>
         <Col flex={3}>
@@ -111,11 +104,11 @@ const TodoModal: React.FC<TodoModalProps> = ({
             contentEditableClassName="editor-panel"
             onChange={(content) => {
               // @ts-ignore
-              setTodoInfo({ ...todoInfo, content });
+              content && setTodoInfo({ ...todoInfo, content });
             }}
           />
           <Row justify={"end"}>
-            <Button disabled={!todoInfo} onClick={doDelete}>
+            <Button disabled={!todoInfo} onClick={handleDelete}>
               delete
             </Button>
             <Button
@@ -152,8 +145,9 @@ const EditableTitle: React.FC<{
   initialValue?: TodoItemType;
   onSave?: (value: string) => void;
 }> = ({ initialValue, onSave }) => {
-  const [value, setValue] = useState(initialValue?.title || "");
-  const [isEdit, setIsEdit] = useState(!initialValue || false);
+  const { title = "", author, createTime, lastModify } = initialValue || {};
+  const [value, setValue] = useState(title);
+  const [isEdit, setIsEdit] = useState(!title || false);
   return (
     <>
       <Row
@@ -194,7 +188,7 @@ const EditableTitle: React.FC<{
           </>
         ) : (
           <>
-            <Typography.Title level={3}>{initialValue?.title}</Typography.Title>
+            <Typography.Title level={3}>{title}</Typography.Title>
             <Button
               type="text"
               onClick={() => {
@@ -208,9 +202,9 @@ const EditableTitle: React.FC<{
       </Row>
       <Space>
         <Tag>Draft</Tag>
-        <Tag>author: {initialValue?.author}</Tag>
-        <Tag>create time: {initialValue?.createTime}</Tag>
-        <Tag>update time: {initialValue?.lastModify}</Tag>
+        <Tag>author: {author}</Tag>
+        <Tag>create time: {createTime}</Tag>
+        <Tag>update time: {lastModify}</Tag>
       </Space>
     </>
   );

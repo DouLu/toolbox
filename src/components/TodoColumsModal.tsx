@@ -56,13 +56,9 @@ const TodoColumsModal: React.FC<TodoColumsModalProps> = ({
         <Form.Item name="color" label="Color">
           <ColorSelector />
         </Form.Item>
-        {/* FIXME: text area组件为什么报错？ */}
         <Form.Item name="desc" label="Description">
-          <Input />
-        </Form.Item>
-        {/* <Form.Item name="desc" label="Description">
           <Input.TextArea rows={6} />
-        </Form.Item> */}
+        </Form.Item>
         <Form.Item>
           <Space>
             <Button htmlType="button" onClick={handleCancel}>

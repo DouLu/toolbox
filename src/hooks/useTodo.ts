@@ -11,7 +11,6 @@ export default function useTodo() {
 
   // @ts-ignore
   const setUnionList = ([columnList, todoList]) => {
-    // FIXME: 如果两个列表都为null是否报错？
     const unionList = (columnList as ColumsType[]).map((c) => {
       const items = (todoList as TodoItemType[]).filter(
         (t) => t.categoryId === c.id
@@ -61,13 +60,18 @@ export default function useTodo() {
       .catch((err) => console.log(err));
   };
 
-  const deleteTodo = (id: number) => {
+  const deleteTodo = (id: number, callback?: () => void) => {
     fetch(API_HOST + "todoList/" + id, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-    }).catch((err) => console.log(err));
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        callback?.();
+      })
+      .catch((err) => console.log(err));
   };
 
   const deleteTodoColums = (id: number, todoIdList?: number[]) => {
@@ -123,11 +127,12 @@ export default function useTodo() {
       .catch((err) => console.log(err));
   };
 
-  const getTodoInfo = (id: number) => {
+  const getTodoInfo = (id: number, callback?: (res: TodoItemType) => void) => {
     fetch(API_HOST + "todoList/" + id)
       .then((res) => res.json())
       .then((res) => {
         setTodoInfo(res);
+        callback?.(res);
       })
       .catch((err) => console.log(err));
   };
@@ -152,6 +157,7 @@ export default function useTodo() {
     getTodoColumsById,
     deleteTodoColums,
     todoInfo,
+    setTodoInfo,
     postTodoItem,
     getTodoInfo,
     patchTodoItem,
