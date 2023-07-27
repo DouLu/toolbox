@@ -1,5 +1,6 @@
 import { Card, Col, Row } from "antd";
 import { Link } from "react-router-dom";
+import { getPathByRouterName } from "../routes/routerMap";
 
 export default function Home() {
   return (
@@ -7,7 +8,10 @@ export default function Home() {
       <Col span={18}>
         <Row gutter={15}>
           <Col span={8}>
-            <Card title="todo list" extra={<Link to="todoList">more</Link>}>
+            <Card
+              title="todo list"
+              extra={<Link to={getPathByRouterName("todos")}>more</Link>}
+            >
               练习项目，模仿todo list
             </Card>
           </Col>
@@ -17,7 +21,10 @@ export default function Home() {
             </Card>
           </Col>
           <Col span={8}>
-            <Card title="日签" extra={<Link to="/dailyCheckIn">more</Link>}>
+            <Card
+              title="日签"
+              extra={<Link to={getPathByRouterName("dailyCheckIn")}>more</Link>}
+            >
               练习项目，一个专属自己的每日签到应用
             </Card>
           </Col>

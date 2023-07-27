@@ -5,8 +5,9 @@ import DailyCheckIn from "../pages/DailyCheckIn";
 import Dashboard from "../pages/Dashboard";
 import ErrorPage from "../pages/ErrorPage";
 import Home from "../pages/Home";
+import ReducerTodos from "../pages/ReducerTodos";
 import Todo from "../pages/Todo";
-import Tools from "../pages/Tools";
+import { getPathByRouterName } from "./routerMap";
 
 const LazyTools = lazy(() => import("../pages/Tools"));
 
@@ -18,30 +19,30 @@ export const routes: RouteObject[] = [
     // loader: rootLoader,
     children: [
       {
-        path: "/",
+        path: getPathByRouterName("home"),
         element: <Home />,
       },
       {
-        path: "/todo",
+        path: getPathByRouterName("todos"),
         element: <Todo />,
         // loader: async () => {
         //   return fetch(API_HOST + "todos").then((res) => res.json());
         // },
       },
       {
-        path: "dashboard",
+        path: getPathByRouterName("reducer_todos"),
+        element: <ReducerTodos />,
+      },
+      {
+        path: getPathByRouterName("dashboard"),
         element: <Dashboard />,
       },
       {
-        path: "tools",
-        element: <Tools />,
-      },
-      {
-        path: "lazy_tools",
+        path: getPathByRouterName("lazy_tools"),
         element: <LazyTools />,
       },
       {
-        path: "dailyCheckIn",
+        path: getPathByRouterName("dailyCheckIn"),
         element: <DailyCheckIn />,
       },
     ],

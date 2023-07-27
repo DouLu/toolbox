@@ -7,6 +7,7 @@ import {
 import { Breadcrumb, Button, Input, Layout, Menu, Space } from "antd";
 import { Suspense } from "react";
 import { NavLink, Outlet, useMatch } from "react-router-dom";
+import { getPathByRouterName, getRouterArray } from "../routes/routerMap";
 import "./index.css";
 const { Header, Sider, Footer, Content } = Layout;
 
@@ -27,22 +28,16 @@ const footerStyle: React.CSSProperties = {
   textAlign: "center",
 };
 
+const todosPath = getPathByRouterName("todos");
 export default function MyLayout() {
-  const todoPage = useMatch("/todo");
+  const todoPage = useMatch(todosPath);
   return (
     <Layout>
       <Sider style={siderStyle}>
         <Menu
           theme="dark"
           mode="vertical"
-          defaultSelectedKeys={["2"]}
-          items={[
-            { title: "home", path: "/" },
-            { title: "todo", path: "/todo" },
-            { title: "tools", path: "/tools" },
-            { title: "lazy tools", path: "/lazy_tools" },
-            { title: "dashboard", path: "/dashboard" },
-          ].map(({ title, path }) => ({
+          items={getRouterArray().map(({ title, path }) => ({
             key: title,
             label: <NavLink to={path}>{title}</NavLink>,
           }))}
