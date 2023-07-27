@@ -1,4 +1,4 @@
-import { BadgeProps, Button, Calendar, Typography } from "antd";
+import { BadgeProps, Button, Calendar, Space, Typography } from "antd";
 import type { SelectInfo } from "antd/es/calendar/generateCalendar";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
@@ -6,6 +6,7 @@ import type { CellRenderInfo } from "rc-picker/lib/interface";
 import { useState } from "react";
 import { useEffectOnce } from "react-use";
 import DailyCheckInCard, { DoneList } from "../components/DailyCheckInCard";
+import TimeClock from "../components/TimeClock";
 import useDailyCheckIn from "../hooks/useDailyCheckIn";
 import { DATE_FORMATER } from "../utils";
 
@@ -20,7 +21,6 @@ export type CheckInType = {
 
 export default function DailyCheckIn() {
   const [open, setOpen] = useState(false);
-  // const { time } = useClock();
   const {
     getCheckedInList,
     getCheckInDataById,
@@ -94,23 +94,25 @@ export default function DailyCheckIn() {
   );
   return (
     <div>
-      {/* FIXME: 如何只更新time组件，而不触发calendar组件的渲染？ */}
-      {/* <p>welcome! today is {time}</p> */}
-      <Button
-        size="large"
-        type="primary"
-        onClick={() => {
-          setOpen(true);
-          if (todayChecked) {
-            const YMD = dayjs().format(DATE_FORMATER);
-            getCheckInDataById(dayjs(YMD).valueOf());
-          } else {
-            getRandomQuotes();
-          }
-        }}
-      >
-        today words
-      </Button>
+      <Space>
+        <span>Welcome!</span>
+        <TimeClock />
+        <Button
+          size="large"
+          type="primary"
+          onClick={() => {
+            setOpen(true);
+            if (todayChecked) {
+              const YMD = dayjs().format(DATE_FORMATER);
+              getCheckInDataById(dayjs(YMD).valueOf());
+            } else {
+              getRandomQuotes();
+            }
+          }}
+        >
+          daily quote
+        </Button>
+      </Space>
       <Typography.Title>Clock-in Records Calendar</Typography.Title>
       <Calendar
         cellRender={cellRender}

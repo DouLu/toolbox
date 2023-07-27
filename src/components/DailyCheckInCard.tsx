@@ -67,8 +67,14 @@ const DailyCheckInCard = ({
           >
             check in
           </Button>
-          <Typography.Title level={5}>today summary</Typography.Title>
-          <DoneList dataSource={doneList} />
+
+          {doneList?.length && (
+            <>
+              <Typography.Title level={5}>today summary</Typography.Title>
+              <DoneList dataSource={doneList} />
+            </>
+          )}
+
           {isEdit ? (
             <div>
               <Input.TextArea

@@ -127,7 +127,7 @@
   width: 4cqi;
 }
 
-p {
+.clock-refer {
   display: none;
   font-family: ui-sans-serif, system-ui, sans-serif;
   text-align: center;

@@ -16,7 +16,7 @@ const Clock: React.FC<{ width?: number; height?: number }> = ({
   });
   return (
     <div>
-      <p>
+      <p className="clock-refer">
         <small>author - https://codepen.io/stoumann/pen/wvxOQKo</small>
         <small>
           CSS sin() and cos() does <strong>NOT</strong> work in your browser.

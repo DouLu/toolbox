@@ -1,15 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useEffectOnce } from "react-use";
 import { getCurrentTime } from "../utils";
 
-export default function useClock() {
+export default function TimeClock() {
   const [time, updateTime] = useState(getCurrentTime());
-  useEffect(() => {
+  useEffectOnce(() => {
     const timer = setInterval(() => {
       updateTime(getCurrentTime());
     }, 1000);
     return () => {
       clearInterval(timer);
     };
-  }, []);
-  return { time };
+  });
+  return <span>{time}</span>;
 }

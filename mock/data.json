@@ -107,12 +107,36 @@
       "avatar": "https://xsgames.co/randomusers/avatar.php?g=pixel",
       "id": 1690214400000,
       "date": "2023/07/25"
+    },
+    {
+      "quotes": "所谓文明就是：对自然的敬畏，对生命的尊重，对弱者的同情，对诺言的遵守，对正义的捍卫！",
+      "img": "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+      "avatar": "https://xsgames.co/randomusers/avatar.php?g=pixel",
+      "doneList": [
+        {
+          "status": "success",
+          "content": "总结了一下react源码的学习"
+        },
+        {
+          "status": "success",
+          "content": "用useReducer重构代码"
+        },
+        {
+          "status": "success",
+          "content": "纯CSS画的⏰时钟"
+        }
+      ],
+      "id": 1690387200000,
+      "date": "2023/07/27"
     }
   ],
   "randomQuotes": {
-    "quotes": "所谓文明就是：对自然的敬畏，对生命的尊重，对弱者的同情，对诺言的遵守，对正义的捍卫！",
+    "quotes": "Do something today that your future self will thank you for.",
     "img": "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-    "avatar": "https://xsgames.co/randomusers/avatar.php?g=pixel"
+    "avatar": "https://xsgames.co/randomusers/avatar.php?g=pixel",
+    "doneList": null,
+    "id": 1690387200000,
+    "date": "2023/07/27"
   },
   "todoColumnList": [
     {
