@@ -32,16 +32,10 @@ type TodoModalProps = {
   open: boolean;
   initialValue?: TodoItemType;
   handleClose: () => void;
-  handleDelete: () => void;
+  handleDelete: (id: number) => void;
   handleSave: (todo: TodoItemType) => void;
   columnList?: ColumsType[];
 };
-
-const getOptions = (data: ColumsType[]) =>
-  data.map((d) => ({
-    value: d.id,
-    label: <Tag color={d.color}>{d.title}</Tag>,
-  }));
 
 const TodoModal: React.FC<TodoModalProps> = ({
   open,
@@ -56,12 +50,10 @@ const TodoModal: React.FC<TodoModalProps> = ({
   useEffect(() => {
     if (initialValue) {
       setTodoInfo(initialValue);
-    } else {
-      // @ts-ignore
-      setTodoInfo({ categoryId: 1 });
     }
   }, [initialValue]);
 
+  const defaultCategorId = columnList?.[0]?.id;
   const doSave = (val: string | any) => {
     const lastModify = getCurrentTime();
     const title = typeof val === "string" ? val : todoInfo?.title || "";
@@ -73,6 +65,7 @@ const TodoModal: React.FC<TodoModalProps> = ({
       const createTime = getCurrentTime();
       // @ts-ignore
       handleSave({
+        categoryId: defaultCategorId,
         ...updateValue,
         createTime,
         author: "DL",
@@ -84,22 +77,18 @@ const TodoModal: React.FC<TodoModalProps> = ({
 
   return (
     <Modal
+      destroyOnClose={true}
       width={1000}
       open={open}
       onCancel={handleClose}
       footer={false}
       title={false}
     >
-      <EditableTitle
-        key={JSON.stringify(initialValue?.title)}
-        initialValue={initialValue}
-        onSave={doSave}
-      />
+      <EditableTitle initialValue={initialValue} onSave={doSave} />
       <Divider />
       <Row wrap={false}>
         <Col flex={3}>
           <MDXEditor
-            key={JSON.stringify(initialValue?.content)}
             markdown={initialValue?.content || ""}
             contentEditableClassName="editor-panel"
             onChange={(content) => {
@@ -108,7 +97,12 @@ const TodoModal: React.FC<TodoModalProps> = ({
             }}
           />
           <Row justify={"end"}>
-            <Button disabled={!todoInfo} onClick={handleDelete}>
+            <Button
+              disabled={!todoInfo}
+              onClick={() => {
+                handleDelete(todoInfo!.id);
+              }}
+            >
               delete
             </Button>
             <Button
@@ -126,7 +120,7 @@ const TodoModal: React.FC<TodoModalProps> = ({
         <Col flex={1}>
           <span>Status</span>
           <Select
-            defaultValue={todoInfo?.categoryId}
+            defaultValue={todoInfo?.categoryId || defaultCategorId}
             options={getOptions(columnList)}
             onSelect={(categoryId) => {
               // @ts-ignore
@@ -140,6 +134,12 @@ const TodoModal: React.FC<TodoModalProps> = ({
   );
 };
 export default TodoModal;
+
+const getOptions = (data: ColumsType[]) =>
+  data.map((d) => ({
+    value: d.id,
+    label: <Tag color={d.color}>{d.title}</Tag>,
+  }));
 
 const EditableTitle: React.FC<{
   initialValue?: TodoItemType;

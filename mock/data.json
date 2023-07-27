@@ -116,18 +116,6 @@
   },
   "todoColumnList": [
     {
-      "id": 1,
-      "title": "Todo",
-      "color": "#1a7f37",
-      "desc": "This item hasn't been started"
-    },
-    {
-      "id": 2,
-      "title": "In Progress",
-      "color": "#9a6700",
-      "desc": "This is actively being worked on"
-    },
-    {
       "id": 3,
       "title": "Done",
       "color": "#8250df",
@@ -142,26 +130,24 @@
   ],
   "todoList": [
     {
-      "id": 1,
-      "categoryId": 1,
-      "title": "todo list",
-      "content": "markdown text\n\n1. mark down\n2. list two\n\ntodo list\n\n* \\[ X ]- d\n* s&#x20;\n* 是\n* 大富大贵发货\n* 这是\n",
-      "tag": "customize",
-      "status": "Todo",
-      "createTime": "",
-      "lastModify": "2023-07-26 23:42:09",
-      "author": ""
-    },
-    {
-      "createTime": "2023-07-22 5:32:43",
+      "categoryId": 3,
+      "title": "a",
+      "lastModify": "2023-07-27 17:37:04",
+      "createTime": "2023-07-27 17:37:04",
       "author": "DL",
       "tag": "string",
       "status": "Done",
-      "title": "cvvvvvv",
-      "categoryId": 2,
-      "lastModify": "2023-07-26 22:30:29",
-      "content": "# 以及标题\n\n## 二级标题\n\n### 三级标题\n",
-      "id": 10
+      "id": 1
+    },
+    {
+      "categoryId": 4,
+      "title": "b",
+      "lastModify": "2023-07-27 18:19:56",
+      "createTime": "2023-07-27 18:19:56",
+      "author": "DL",
+      "tag": "string",
+      "status": "Done",
+      "id": 2
     }
   ]
 }

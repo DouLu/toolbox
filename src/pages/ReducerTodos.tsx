@@ -1,60 +1,50 @@
 import { AppstoreAddOutlined, EllipsisOutlined } from "@ant-design/icons";
-import { Button, Col, Dropdown, Input, Row, message } from "antd";
-import { useState } from "react";
+import { Button, Col, Dropdown, Input, Row } from "antd";
+import { useReducer } from "react";
 import { useEffectOnce } from "react-use";
 import CategoriesCard from "../components/CategoriesCard";
 import TodoColumsModal from "../components/TodoColumsModal";
 import TodoList from "../components/TodoList";
-import TodoModal, { TodoItemType } from "../components/TodoModal";
-import useTodo from "../hooks/useTodo";
+import TodoModal from "../components/TodoModal";
+import useReducerTodos from "../hooks/useReducerTodos";
+import todoReducer, {
+  initialTodosState,
+  todoStateType,
+} from "../reducers/todos";
 
 export default function ReducerTodos() {
-  // const categories: CategoriesType[] = useLoaderData() as CategoriesType[];
-  const [open, setOpen] = useState(false);
-  const [visible, setVisible] = useState(false);
-
+  const [state, dispatch] = useReducer(todoReducer, initialTodosState);
   const {
-    postTodoColums,
-    getUnionList,
-    todoList = [],
-    columsInfo,
-    setColumsInfo,
-    deleteTodoColums,
-    patchTodoColums,
-    getTodoColumsById,
+    openColumnModal,
+    openTodoModal,
     todoInfo,
-    setTodoInfo,
-    postTodoItem,
-    getTodoInfo,
-    patchTodoItem,
+    columnInfo,
+    columnList,
+    todoList,
+  } = state as todoStateType;
+  const {
+    handleColumnModal,
+    handleTodoModal,
     searchTodos,
-    deleteTodo,
-  } = useTodo();
+    handleEditColumn,
+    handleDeleteColumn,
+    handleEditTodo,
+    closeColumsModal,
+    handleSaveColumnInfo,
+    handleCloseTodoModal,
+    handleDeleteTodo,
+    handleSaveTodoInfo,
+    getUnionList,
+  } = useReducerTodos(dispatch);
 
   useEffectOnce(() => {
     getUnionList();
   });
 
-  const closeColumsModal = () => {
-    setColumsInfo(undefined);
-    setOpen(false);
-  };
-
-  const refreshTodo = (res?: TodoItemType) => {
-    if (res?.id) {
-      getTodoInfo(res.id);
-      getUnionList();
-    } else {
-      message.error("fetch error");
-    }
-  };
-
-  const doDelete = () => {
-    deleteTodo(todoInfo?.id!, () => {
-      setVisible(false);
-      getUnionList();
-    });
-  };
+  const unionList = columnList?.map((c) => {
+    const items = todoList?.filter((t) => t?.categoryId === c.id);
+    return { ...c, items };
+  });
 
   return (
     <>
@@ -69,16 +59,16 @@ export default function ReducerTodos() {
         <Col flex={100}>
           <Button
             onClick={() => {
-              setVisible(true);
+              handleTodoModal(true);
             }}
-            disabled={!todoList.length}
+            disabled={!unionList?.length}
           >
             Add item
           </Button>
         </Col>
       </Row>
       <div className="todo-panel">
-        {todoList.map(({ id, items, ...c }) => (
+        {unionList?.map(({ id, items, ...c }) => (
           <CategoriesCard
             key={id}
             {...c}
@@ -94,15 +84,10 @@ export default function ReducerTodos() {
                   onClick: (info) => {
                     switch (info.key) {
                       case "edit":
-                        getTodoColumsById(id);
-                        setOpen(true);
+                        handleEditColumn(id);
                         break;
                       case "delete":
-                        deleteTodoColums(
-                          id,
-                          items?.map((i) => i.id)
-                        );
-                        getUnionList();
+                        handleDeleteColumn(id, items);
                         break;
                       default:
                         return;
@@ -114,55 +99,31 @@ export default function ReducerTodos() {
               </Dropdown>
             }
           >
-            <TodoList
-              dataSource={items}
-              handleEdit={(id) => {
-                getTodoInfo(id, (res) => {
-                  if (res.id) setVisible(true);
-                });
-              }}
-            />
+            <TodoList dataSource={items} handleEdit={handleEditTodo} />
           </CategoriesCard>
         ))}
         <Col key="add-colums">
           <Button
             onClick={() => {
-              setOpen(true);
+              handleColumnModal(true);
             }}
             icon={<AppstoreAddOutlined />}
           />
         </Col>
       </div>
       <TodoColumsModal
-        open={open}
-        initialValue={columsInfo}
+        open={openColumnModal}
+        initialValue={columnInfo}
         handleCancel={closeColumsModal}
-        handleSave={(values) => {
-          if (values?.id) {
-            patchTodoColums(values);
-          } else {
-            postTodoColums(values);
-          }
-          closeColumsModal();
-          getUnionList();
-        }}
+        handleSave={handleSaveColumnInfo}
       />
       <TodoModal
-        open={visible}
+        open={openTodoModal}
         initialValue={todoInfo}
-        columnList={todoList}
-        handleClose={() => {
-          setVisible(false);
-          setTodoInfo(undefined);
-        }}
-        handleSave={(todo) => {
-          if (todo.categoryId && !todo.id) {
-            postTodoItem(todo).then(refreshTodo);
-          } else {
-            patchTodoItem(todo).then(refreshTodo);
-          }
-        }}
-        handleDelete={doDelete}
+        columnList={columnList}
+        handleClose={handleCloseTodoModal}
+        handleSave={handleSaveTodoInfo}
+        handleDelete={handleDeleteTodo}
       />
     </>
   );

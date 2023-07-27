@@ -22,12 +22,12 @@ interface ColorSelectorProps {
 }
 
 const ColorSelector: React.FC<ColorSelectorProps> = ({
-  defaultValue,
-  value = STATUS_COLORS[0].active,
+  defaultValue = STATUS_COLORS[0].active,
+  value,
   onChange,
 }) => {
   useEffectOnce(() => {
-    onChange?.(defaultValue || DEFAULT_COLOR);
+    onChange?.(value || defaultValue || DEFAULT_COLOR);
   });
 
   return (

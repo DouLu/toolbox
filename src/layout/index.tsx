@@ -29,8 +29,10 @@ const footerStyle: React.CSSProperties = {
 };
 
 const todosPath = getPathByRouterName("todos");
+const reducerTodosPath = getPathByRouterName("reducer_todos");
 export default function MyLayout() {
   const todoPage = useMatch(todosPath);
+  const reducerTodoPage = useMatch(reducerTodosPath);
   return (
     <Layout>
       <Sider style={siderStyle}>
@@ -54,7 +56,9 @@ export default function MyLayout() {
           </Space>
         </Header>
 
-        <div className={`content ${todoPage && "vh-content"}`}>
+        <div
+          className={`content ${(todoPage || reducerTodoPage) && "vh-content"}`}
+        >
           <Breadcrumb style={{ margin: "16px 0" }}>
             <Breadcrumb.Item>Home</Breadcrumb.Item>
             <Breadcrumb.Item>List</Breadcrumb.Item>
