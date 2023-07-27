@@ -1,5 +1,6 @@
 import { Card, Col, Row } from "antd";
 import { Link } from "react-router-dom";
+import Clock from "../components/clock/Clock";
 import { getPathByRouterName } from "../routes/routerMap";
 
 export default function Home() {
@@ -38,6 +39,9 @@ export default function Home() {
         </Row>
       </Col>
       <Col span={6}>
+        <Card title={false} style={{ marginBottom: 15 }}>
+          <Clock width={120} height={120} />
+        </Card>
         <Card title="profile">
           本项目是一个聚合各种功能的工具箱🧰，会一直慢慢添加有趣的内容，期待一下吧😚！
         </Card>

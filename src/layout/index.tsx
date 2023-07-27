@@ -59,11 +59,15 @@ export default function MyLayout() {
         <div
           className={`content ${(todoPage || reducerTodoPage) && "vh-content"}`}
         >
-          <Breadcrumb style={{ margin: "16px 0" }}>
-            <Breadcrumb.Item>Home</Breadcrumb.Item>
-            <Breadcrumb.Item>List</Breadcrumb.Item>
-            <Breadcrumb.Item>App</Breadcrumb.Item>
-          </Breadcrumb>
+          <Breadcrumb
+            style={{ margin: "16px 0" }}
+            items={[
+              { title: "Home", path: "Home" },
+              { title: "List", path: "List" },
+              { title: "App", path: "App" },
+            ]}
+          />
+
           <Suspense fallback={<p>loading.....</p>}>
             <Outlet />
           </Suspense>
