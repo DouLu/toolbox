@@ -123,16 +123,13 @@ export const DoneList: React.FC<{
 }> = ({ dataSource }) => {
   return (
     <>
-      {!!dataSource?.length && (
-        <div>
-          {dataSource?.map((d, index) => (
-            <>
-              <Badge key={index} status={d.status} text={d.content} />
-              <br />
-            </>
-          ))}
-        </div>
-      )}
+      {!!dataSource?.length &&
+        dataSource?.map((d, index) => (
+          <div key={index}>
+            <Badge status={d.status} text={d.content} />
+            <br />
+          </div>
+        ))}
     </>
   );
 };

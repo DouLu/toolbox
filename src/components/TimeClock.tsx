@@ -4,6 +4,7 @@ import { getCurrentTime } from "../utils";
 
 export default function TimeClock() {
   const [time, updateTime] = useState(getCurrentTime());
+
   useEffectOnce(() => {
     const timer = setInterval(() => {
       updateTime(getCurrentTime());
@@ -12,5 +13,6 @@ export default function TimeClock() {
       clearInterval(timer);
     };
   });
+
   return <span>{time}</span>;
 }
