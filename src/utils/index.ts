@@ -7,4 +7,9 @@ const getCurrentTime = () => dayjs().format(FULL_DATE_FORMATER);
 
 const API_HOST = "http://127.0.0.1:8080/api/";
 
-export { API_HOST, DATE_FORMATER, FULL_DATE_FORMATER, getCurrentTime };
+const sleep = async (time = 1000) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, time);
+  });
+
+export { API_HOST, DATE_FORMATER, FULL_DATE_FORMATER, getCurrentTime, sleep };

@@ -128,15 +128,33 @@
       ],
       "id": 1690387200000,
       "date": "2023/07/27"
+    },
+    {
+      "quotes": "Do something today that your future self will thank you for.",
+      "img": "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+      "avatar": "https://xsgames.co/randomusers/avatar.php?g=pixel",
+      "doneList": [
+        {
+          "status": "success",
+          "content": "JS历史和模块化历史"
+        },
+        {
+          "status": "success",
+          "content": "webpack学习规划"
+        },
+        {
+          "status": "success",
+          "content": "blog coding设计"
+        }
+      ],
+      "id": 1690473600000,
+      "date": "2023/07/28"
     }
   ],
   "randomQuotes": {
-    "quotes": "Do something today that your future self will thank you for.",
     "img": "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
     "avatar": "https://xsgames.co/randomusers/avatar.php?g=pixel",
-    "doneList": null,
-    "id": 1690387200000,
-    "date": "2023/07/27"
+    "quotes": "Do something today that your future self will thank you for."
   },
   "todoColumnList": [
     {

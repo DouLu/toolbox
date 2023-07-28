@@ -1,24 +1,49 @@
-const routerMap = new Map();
-routerMap.set("home", { title: "home", path: "/" });
-routerMap.set("dailyCheckIn", {
-  title: "daily Check In",
-  path: "/dailyCheckIn",
-});
-routerMap.set("todos", { title: "todos", path: "/todos" });
-routerMap.set("reducer_todos", {
-  title: "reducer todos",
-  path: "/reducer_todos",
-});
-routerMap.set("lazy_tools", { title: "lazy tools", path: "/lazy_tools" });
-routerMap.set("dashboard", { title: "dashboard", path: "/dashboard" });
-
-const getPathByRouterName = (name: string) => routerMap.get(name)?.path;
-
-const getRouterArray = () => {
-  const routerArray: { title: string; path: string }[] = [];
-  routerMap.forEach((v, k) => {
-    routerArray.push(v);
-  });
-  return routerArray;
+type MenuRouterProps = {
+  title: string;
+  path: string;
+  children?: MenuRouterProps[];
 };
-export { getPathByRouterName, getRouterArray, routerMap };
+
+const MENU_ROUTERS: MenuRouterProps[] = [
+  { title: "home", path: "/home" },
+  {
+    title: "daily Check In",
+    path: "/dailyCheckIn",
+  },
+  { title: "todos", path: "/todos" },
+  {
+    title: "reducer todos",
+    path: "/reducer_todos",
+  },
+  { title: "tools", path: "/tools" },
+  {
+    title: "blog management",
+    path: "/blogManagement",
+    children: [
+      { title: "dashboard", path: "/blogManagement/dashboard" },
+      { title: "blog list", path: "/blogManagement/blogList" },
+      { title: "new blog", path: "/blogManagement/newBlog/:blogId?" },
+    ],
+  },
+];
+
+const getMenuItems = (
+  routers: MenuRouterProps[],
+  renderLabel?: (router: { path: string; title: string }) => React.ReactElement
+): any[] => {
+  return routers.map(({ title, path, children }) => {
+    if (children?.length) {
+      return {
+        key: title,
+        label: title,
+        children: getMenuItems(children, renderLabel),
+      };
+    }
+    return {
+      key: title,
+      label: renderLabel?.({ path, title }) || title,
+    };
+  });
+};
+
+export { MENU_ROUTERS, getMenuItems };

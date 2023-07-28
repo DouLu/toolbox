@@ -1,13 +1,18 @@
 import { lazy } from "react";
-import { RouteObject } from "react-router-dom";
+import { RouteObject, defer, redirect } from "react-router-dom";
 import MyLayout from "../layout";
 import DailyCheckIn from "../pages/DailyCheckIn";
-import Dashboard from "../pages/Dashboard";
 import ErrorPage from "../pages/ErrorPage";
 import Home from "../pages/Home";
 import ReducerTodos from "../pages/ReducerTodos";
 import Todo from "../pages/Todo";
-import { getPathByRouterName } from "./routerMap";
+import Tools from "../pages/Tools";
+import BlogList from "../pages/blog/admin/BlogList";
+import Dashboard from "../pages/blog/admin/Dashboard";
+import NewBlog from "../pages/blog/admin/NewBlog";
+import Blog from "../pages/blog/user";
+import BlogDetail from "../pages/blog/user/BlogDetail";
+import { doRequest } from "../utils/request";
 
 const LazyTools = lazy(() => import("../pages/Tools"));
 
@@ -16,35 +21,67 @@ export const routes: RouteObject[] = [
     path: "/",
     element: <MyLayout />,
     errorElement: <ErrorPage />,
-    // loader: rootLoader,
+    loader: ({ request }) => {
+      const pathname = new URL(request.url).pathname;
+      if (pathname === "/") {
+        return redirect("/home");
+      }
+      return null;
+    },
     children: [
       {
-        path: getPathByRouterName("home"),
+        path: "/home",
         element: <Home />,
       },
       {
-        path: getPathByRouterName("todos"),
+        path: "/todos",
         element: <Todo />,
-        // loader: async () => {
-        //   return fetch(API_HOST + "todos").then((res) => res.json());
-        // },
       },
       {
-        path: getPathByRouterName("reducer_todos"),
+        path: "/reducer_todos",
         element: <ReducerTodos />,
       },
       {
-        path: getPathByRouterName("dashboard"),
+        path: "/tools",
+        // element: <LazyTools />,
+        element: <Tools />,
+        loader: async () => {
+          return defer({ list: doRequest("test", "GET", null, true) });
+        },
+      },
+      {
+        path: "/dailyCheckIn",
+        element: <DailyCheckIn />,
+      },
+      // admin pages
+      {
+        path: "/blogManagement",
+        loader: ({ request }) => {
+          const pathname = new URL(request.url).hostname;
+          if (pathname === "/blogManagement") {
+            return redirect("/blogManagement/dashboard");
+          }
+          return null;
+        },
+      },
+      {
+        path: "/blogManagement/dashboard",
         element: <Dashboard />,
       },
       {
-        path: getPathByRouterName("lazy_tools"),
-        element: <LazyTools />,
+        path: "/blogManagement/blogList",
+        element: <BlogList />,
       },
       {
-        path: getPathByRouterName("dailyCheckIn"),
-        element: <DailyCheckIn />,
+        path: "/blogManagement/newBlog/:blogId?",
+        element: <NewBlog />,
       },
+      // user pages
+      {
+        path: "/blog",
+        element: <Blog />,
+      },
+      { path: "/blog/:blogId", element: <BlogDetail /> },
     ],
   },
 ];

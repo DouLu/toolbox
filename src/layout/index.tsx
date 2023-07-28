@@ -7,7 +7,7 @@ import {
 import { Breadcrumb, Button, Input, Layout, Menu, Space } from "antd";
 import { Suspense } from "react";
 import { NavLink, Outlet, useMatch } from "react-router-dom";
-import { getPathByRouterName, getRouterArray } from "../routes/routerMap";
+import { MENU_ROUTERS, getMenuItems } from "../routes/routerMap";
 import "./index.css";
 const { Header, Sider, Footer, Content } = Layout;
 
@@ -28,21 +28,18 @@ const footerStyle: React.CSSProperties = {
   textAlign: "center",
 };
 
-const todosPath = getPathByRouterName("todos");
-const reducerTodosPath = getPathByRouterName("reducer_todos");
 export default function MyLayout() {
-  const todoPage = useMatch(todosPath);
-  const reducerTodoPage = useMatch(reducerTodosPath);
+  const todoPage = useMatch("/todos");
+  const reducerTodoPage = useMatch("/reducer_todos");
   return (
     <Layout>
       <Sider style={siderStyle}>
         <Menu
           theme="dark"
-          mode="vertical"
-          items={getRouterArray().map(({ title, path }) => ({
-            key: title,
-            label: <NavLink to={path}>{title}</NavLink>,
-          }))}
+          mode="inline"
+          items={getMenuItems(MENU_ROUTERS, ({ path, title }) => (
+            <NavLink to={path}>{title}</NavLink>
+          ))}
         />
       </Sider>
       <Content style={contentStyle}>

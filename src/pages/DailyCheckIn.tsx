@@ -30,6 +30,7 @@ export default function DailyCheckIn() {
     checkInData,
     checked,
     patchRandom,
+    putRandom,
   } = useDailyCheckIn();
 
   useEffectOnce(getCheckedInList);
@@ -76,7 +77,8 @@ export default function DailyCheckIn() {
       postCheckIn(data, () => {
         setOpen(false);
         getCheckedInList();
-        patchRandom({ ...data, doneList: null });
+        const { img, avatar, quotes } = data;
+        putRandom({ img, avatar, quotes });
       });
     } else {
       const doneList = (checkInData?.doneList || []).concat([

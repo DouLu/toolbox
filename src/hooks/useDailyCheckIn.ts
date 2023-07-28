@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { CheckInType } from "../pages/DailyCheckIn";
 import { API_HOST } from "../utils";
+import { doRequest } from "../utils/request";
 
 export default function useDailyCheckIn() {
   const [checkInData, setCheckInData] = useState<CheckInType>();
@@ -73,6 +74,10 @@ export default function useDailyCheckIn() {
       });
   };
 
+  const putRandom = (data: any) => {
+    doRequest("randomQuotes/", "PUT", data);
+  };
+
   const checked = checkedInList.some(
     (r) => r.date && r.date === checkInData?.date
   );
@@ -87,5 +92,6 @@ export default function useDailyCheckIn() {
     setCheckInData,
     checked,
     patchRandom,
+    putRandom,
   };
 }
