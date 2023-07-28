@@ -39,3 +39,35 @@ export function doRequest(
       );
     });
 }
+
+export async function asyncRequest(
+  url: string,
+  method: methodType,
+  options?: {
+    params?: any;
+    delay?: boolean;
+  }
+) {
+  if (options?.delay) await sleep();
+
+  const bodyParmas =
+    method === "DELETE" ? {} : { body: JSON.stringify(options?.params) };
+  const requestHeaders = {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    ...bodyParmas,
+  };
+  const requestUrl = API_HOST + url;
+  const res =
+    method === "GET"
+      ? await fetch(requestUrl)
+      : await fetch(requestUrl, requestHeaders);
+  // FIXME: 201、304、这种如何处理？
+  if (res.status !== 200 && res.status !== 201) {
+    message.error(`${res.status} : ${res.statusText}`);
+    return undefined;
+  }
+  return res.json();
+}
