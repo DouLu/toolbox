@@ -1,4 +1,3 @@
-import { lazy } from "react";
 import { RouteObject, defer, redirect } from "react-router-dom";
 import MyLayout from "../layout";
 import DailyCheckIn from "../pages/DailyCheckIn";
@@ -14,7 +13,7 @@ import Blog from "../pages/blog/user";
 import BlogDetail from "../pages/blog/user/BlogDetail";
 import { doRequest } from "../utils/request";
 
-const LazyTools = lazy(() => import("../pages/Tools"));
+// const LazyTools = lazy(() => import("../pages/Tools"));
 
 export const routes: RouteObject[] = [
   {
