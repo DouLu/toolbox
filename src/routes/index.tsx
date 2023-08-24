@@ -29,6 +29,12 @@ export const routes: RouteObject[] = [
     },
     children: [
       {
+        path: "/toolbox",
+        loader: () => {
+          return redirect("/home");
+        },
+      },
+      {
         path: "/home",
         element: <Home />,
       },
