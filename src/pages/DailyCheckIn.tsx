@@ -20,7 +20,10 @@ export type CheckInType = {
 };
 
 export default function DailyCheckIn() {
-  const [open, setOpen] = useState(false);
+  const [modalConfig, setModalConfig] = useState({
+    open: false,
+    checked: true,
+  });
   const {
     getCheckedInList,
     getCheckInDataById,
@@ -28,9 +31,9 @@ export default function DailyCheckIn() {
     postCheckIn,
     checkedInList,
     checkInData,
-    checked,
     patchRandom,
     putRandom,
+    getInitialQuotes,
   } = useDailyCheckIn();
 
   useEffectOnce(getCheckedInList);
@@ -58,11 +61,19 @@ export default function DailyCheckIn() {
     return !verifyExistence(date);
   };
 
+  const openModal = (checked: boolean) => {
+    setModalConfig({ open: true, checked });
+  };
+
+  const closeModal = () => {
+    setModalConfig({ open: false, checked: true });
+  };
+
   const handleSelect = (date: dayjs.Dayjs, selectInfo: SelectInfo) => {
     if (verifyExistence(date) && selectInfo.source === "date") {
       const YMD = dayjs(date).format(DATE_FORMATER);
       getCheckInDataById(dayjs(YMD).valueOf());
-      setOpen(true);
+      openModal(true);
     }
   };
 
@@ -70,12 +81,12 @@ export default function DailyCheckIn() {
   const handleCheckIn = (content) => {
     const data = structuredClone(checkInData!);
 
-    if (!checked && typeof content !== "string") {
+    if (typeof content !== "string") {
       const date = dayjs().format(DATE_FORMATER);
       data.id = dayjs(date).valueOf();
       data.date = date;
       postCheckIn(data, () => {
-        setOpen(false);
+        closeModal();
         getCheckedInList();
         const { img, avatar, quotes } = data;
         putRandom({ img, avatar, quotes });
@@ -94,6 +105,7 @@ export default function DailyCheckIn() {
   const todayChecked = checkedInList.some(
     (r) => r.date === dayjs().format(DATE_FORMATER)
   );
+
   return (
     <div>
       <Space>
@@ -103,13 +115,8 @@ export default function DailyCheckIn() {
           size="large"
           type="primary"
           onClick={() => {
-            setOpen(true);
-            if (todayChecked) {
-              const YMD = dayjs().format(DATE_FORMATER);
-              getCheckInDataById(dayjs(YMD).valueOf());
-            } else {
-              getRandomQuotes();
-            }
+            openModal(false);
+            getRandomQuotes();
           }}
         >
           daily quote
@@ -123,13 +130,11 @@ export default function DailyCheckIn() {
       />
       <DailyCheckInCard
         checkInData={checkInData}
-        checked={checked}
-        open={open}
-        onCancel={() => {
-          setOpen(false);
-        }}
+        todayChecked={todayChecked}
+        {...modalConfig}
+        onCancel={closeModal}
         handleReload={() => {
-          getRandomQuotes();
+          getInitialQuotes();
         }}
         handleCkeckIn={handleCheckIn}
       />

@@ -7,6 +7,22 @@ export default function useDailyCheckIn() {
   const [checkInData, setCheckInData] = useState<CheckInType>();
   const [checkedInList, setCheckedInList] = useState<CheckInType[]>([]);
 
+  const getInitialQuotes = () => {
+    fetch("https://api.quotable.io/random")
+      .then((res) => res.json())
+      .then((res) => {
+        // @ts-ignore
+        setCheckInData({
+          img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+          avatar: "https://xsgames.co/randomusers/avatar.php?g=pixel",
+          quotes: res?.content + "-" + res?.author,
+        });
+      })
+      .catch((err) => {
+        console.log("🚀 ~ file: useDailyCheckIn.ts:13 ~ fetch ~ err:", err);
+      });
+  };
+
   const getRandomQuotes = () => {
     fetch(API_HOST + "randomQuotes")
       .then((res) => res.json())
@@ -78,10 +94,6 @@ export default function useDailyCheckIn() {
     doRequest("randomQuotes/", "PUT", data);
   };
 
-  const checked = checkedInList.some(
-    (r) => r.date && r.date === checkInData?.date
-  );
-
   return {
     getCheckedInList,
     getCheckInDataById,
@@ -90,8 +102,8 @@ export default function useDailyCheckIn() {
     checkedInList,
     checkInData,
     setCheckInData,
-    checked,
     patchRandom,
     putRandom,
+    getInitialQuotes,
   };
 }

@@ -19,6 +19,7 @@ import { CheckInType } from "../pages/DailyCheckIn";
 
 const DailyCheckInCard = ({
   checkInData,
+  todayChecked = false,
   checked = false,
   open = false,
   onCancel,
@@ -26,6 +27,7 @@ const DailyCheckInCard = ({
   handleCkeckIn,
 }: {
   checkInData: CheckInType | undefined;
+  todayChecked: boolean;
   checked: boolean;
   open: boolean;
   onCancel: () => void;
@@ -42,15 +44,19 @@ const DailyCheckInCard = ({
         <Card
           style={{ width: 300 }}
           cover={<img alt="example" src={img} />}
-          actions={[
-            <ReloadOutlined
-              key="reload"
-              onClick={() => {
-                !checked && handleReload();
-              }}
-            />,
-            <CopyOutlined key="copy" onClick={() => {}} />,
-          ]}
+          actions={
+            checked
+              ? []
+              : [
+                  <ReloadOutlined
+                    key="reload"
+                    onClick={() => {
+                      handleReload();
+                    }}
+                  />,
+                  <CopyOutlined key="copy" onClick={() => {}} />,
+                ]
+          }
         >
           <Card.Meta
             avatar={<Avatar src={avatar} />}
@@ -63,7 +69,7 @@ const DailyCheckInCard = ({
             size="large"
             icon={<CheckCircleFilled />}
             onClick={handleCkeckIn}
-            disabled={checked}
+            disabled={checked || todayChecked}
           >
             check in
           </Button>
