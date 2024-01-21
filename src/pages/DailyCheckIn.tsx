@@ -1,4 +1,12 @@
-import { BadgeProps, Button, Calendar, Modal, Space, Typography } from "antd";
+import {
+  BadgeProps,
+  Button,
+  Calendar,
+  Modal,
+  Space,
+  Typography,
+  message,
+} from "antd";
 import type { SelectInfo } from "antd/es/calendar/generateCalendar";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
@@ -154,6 +162,7 @@ export default function DailyCheckIn() {
       <Modal
         title="补卡"
         open={isModalOpen}
+        destroyOnClose={true}
         onCancel={() => {
           setIsModalOpen(false);
         }}
@@ -161,13 +170,35 @@ export default function DailyCheckIn() {
       >
         <MakeUpClockingIn
           quotes={checkInData?.quotes || ""}
-          closeModal={() => {
-            setIsModalOpen(false);
-          }}
           handleReload={() => {
             getInitialQuotes();
           }}
           checkedInList={checkedInList}
+          handleCheckIn={(
+            val: { status: BadgeProps["status"]; content: string }[],
+            date
+          ) => {
+            const data = {
+              id: dayjs(date).valueOf(),
+              date,
+              doneList: val,
+              img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+              avatar: "https://xsgames.co/randomusers/avatar.php?g=pixel",
+              quotes: checkInData?.quotes,
+            };
+
+            if (!date) {
+              message.error("please enter date");
+            } else {
+              postCheckIn(data, () => {
+                closeModal();
+                getCheckedInList();
+                const { img, avatar, quotes } = data;
+                putRandom({ img, avatar, quotes });
+              });
+              setIsModalOpen(false);
+            }
+          }}
         />
       </Modal>
     </div>

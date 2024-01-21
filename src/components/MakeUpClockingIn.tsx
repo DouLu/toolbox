@@ -1,18 +1,8 @@
 import { CopyOutlined, ReloadOutlined } from "@ant-design/icons";
-import {
-  Avatar,
-  BadgeProps,
-  Card,
-  Col,
-  DatePicker,
-  Row,
-  Space,
-  message,
-} from "antd";
+import { Avatar, BadgeProps, Card, Col, DatePicker, Row, Space } from "antd";
 import { RangePickerProps } from "antd/es/date-picker";
 import dayjs from "dayjs";
 import { useState } from "react";
-import useDailyCheckIn from "../hooks/useDailyCheckIn";
 import { CheckInType } from "../pages/DailyCheckIn";
 import CheckIn from "./CheckIn";
 /**
@@ -24,15 +14,17 @@ const MakeUpClockingIn = ({
   checkedInList,
   quotes,
   handleReload,
-  closeModal,
+  handleCheckIn,
 }: {
   quotes: string;
   checkedInList: CheckInType[] | undefined;
   handleReload: () => void;
-  closeModal: () => void;
+  handleCheckIn: (
+    val: { status: BadgeProps["status"]; content: string }[],
+    date?: string
+  ) => void;
 }) => {
   const [date, setDate] = useState<string>();
-  const { postCheckIn, getCheckedInList, putRandom } = useDailyCheckIn();
 
   // eslint-disable-next-line arrow-body-style
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
@@ -45,30 +37,6 @@ const MakeUpClockingIn = ({
     return current && (checkedDays || aftherDays || today);
   };
 
-  const handleCheckIn = (
-    val: { status: BadgeProps["status"]; content: string }[]
-  ) => {
-    // 检查check in，日期是否重复
-    const data = {
-      id: dayjs(date).valueOf(),
-      date,
-      doneList: val,
-      img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-      avatar: "https://xsgames.co/randomusers/avatar.php?g=pixel",
-      quotes,
-    };
-
-    if (!date) {
-      message.error("please enter date");
-    } else {
-      postCheckIn(data, () => {
-        closeModal();
-        getCheckedInList();
-        const { img, avatar, quotes } = data;
-        putRandom({ img, avatar, quotes });
-      });
-    }
-  };
   return (
     <Row>
       <Col span={16}>
@@ -115,7 +83,11 @@ const MakeUpClockingIn = ({
         </Card>
       </Col>
       <Col span={8}>
-        <CheckIn handleCkeckIn={handleCheckIn} />
+        <CheckIn
+          handleCkeckIn={(val) => {
+            handleCheckIn(val, date);
+          }}
+        />
       </Col>
     </Row>
   );
