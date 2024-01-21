@@ -1,4 +1,4 @@
-import { BadgeProps, Button, Calendar, Space, Typography } from "antd";
+import { BadgeProps, Button, Calendar, Modal, Space, Typography } from "antd";
 import type { SelectInfo } from "antd/es/calendar/generateCalendar";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
@@ -6,6 +6,7 @@ import type { CellRenderInfo } from "rc-picker/lib/interface";
 import { useState } from "react";
 import { useEffectOnce } from "react-use";
 import DailyCheckInCard, { DoneList } from "../components/DailyCheckInCard";
+import MakeUpClockingIn from "../components/MakeUpClockingIn";
 import TimeClock from "../components/TimeClock";
 import useDailyCheckIn from "../hooks/useDailyCheckIn";
 import { DATE_FORMATER } from "../utils";
@@ -24,6 +25,7 @@ export default function DailyCheckIn() {
     open: false,
     checked: true,
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const {
     getCheckedInList,
     getCheckInDataById,
@@ -121,7 +123,18 @@ export default function DailyCheckIn() {
         >
           daily quote
         </Button>
+        <Button
+          size="large"
+          type="primary"
+          onClick={() => {
+            setIsModalOpen(true);
+            getRandomQuotes();
+          }}
+        >
+          补卡
+        </Button>
       </Space>
+
       <Typography.Title>Clock-in Records Calendar</Typography.Title>
       <Calendar
         cellRender={cellRender}
@@ -138,6 +151,25 @@ export default function DailyCheckIn() {
         }}
         handleCkeckIn={handleCheckIn}
       />
+      <Modal
+        title="补卡"
+        open={isModalOpen}
+        onCancel={() => {
+          setIsModalOpen(false);
+        }}
+        footer={false}
+      >
+        <MakeUpClockingIn
+          quotes={checkInData?.quotes || ""}
+          closeModal={() => {
+            setIsModalOpen(false);
+          }}
+          handleReload={() => {
+            getInitialQuotes();
+          }}
+          checkedInList={checkedInList}
+        />
+      </Modal>
     </div>
   );
 }
