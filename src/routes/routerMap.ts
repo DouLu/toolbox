@@ -16,6 +16,7 @@ const MENU_ROUTERS: MenuRouterProps[] = [
     path: "/reducer_todos",
   },
   { title: "tools", path: "/tools" },
+  { title: "h5下拉刷新", path: "/pullRefresh" },
   {
     title: "blog management",
     path: "/blogManagement",

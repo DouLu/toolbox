@@ -6,6 +6,9 @@
   "dependencies": {
     "@ant-design/icons": "^5.1.4",
     "@babel/core": "^7.16.0",
+    "@better-scroll/core": "^2.5.1",
+    "@better-scroll/pull-down": "^2.5.1",
+    "@better-scroll/pull-up": "^2.5.1",
     "@mdxeditor/editor": "^0.7.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@svgr/webpack": "^5.5.0",

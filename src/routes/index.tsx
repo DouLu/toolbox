@@ -3,6 +3,7 @@ import MyLayout from "../layout";
 import DailyCheckIn from "../pages/DailyCheckIn";
 import ErrorPage from "../pages/ErrorPage";
 import Home from "../pages/Home";
+import PullRefresh from "../pages/PullRefresh";
 import ReducerTodos from "../pages/ReducerTodos";
 import Todo from "../pages/Todo";
 import Tools from "../pages/Tools";
@@ -88,5 +89,9 @@ export const routes: RouteObject[] = [
       },
       { path: "/blog/:blogId", element: <BlogDetail /> },
     ],
+  },
+  {
+    path: "/pullRefresh",
+    element: <PullRefresh />,
   },
 ];
