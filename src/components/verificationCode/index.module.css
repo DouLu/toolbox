@@ -1,0 +1,12 @@
+.telInput {
+  height: 32px;
+  border-color: #666;
+  border-radius: 3px;
+  border-width: 1px;
+}
+.active {
+  background-color: cornflowerblue;
+}
+.disabled {
+  background-color: darkgrey;
+}
