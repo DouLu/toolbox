@@ -1,5 +1,6 @@
 import { Card, Col, Row } from "antd";
 import { Link } from "react-router-dom";
+import Counter from "../components/Counter";
 import Clock from "../components/clock/Clock";
 import VerificationCode from "../components/verificationCode";
 
@@ -28,6 +29,11 @@ export default function Home() {
           <Col span={8}>
             <Card title="封装验证码组件" extra={<Link to="">more</Link>}>
               <VerificationCode />
+            </Card>
+          </Col>
+          <Col span={8}>
+            <Card title="练习ahooks的counter" extra={<Link to="">more</Link>}>
+              <Counter />
             </Card>
           </Col>
           <Col span={8}>
